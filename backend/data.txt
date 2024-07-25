@@ -1,0 +1,29 @@
+-- Insert data into cmn_department
+INSERT INTO cmn_department (department_name, parent_department_id, start_date, end_date) VALUES
+('HR', NULL, 1609459200, NULL),
+('IT', NULL, 1609459200, NULL),
+('Finance', NULL, 1609459200, NULL),
+('Marketing', NULL, 1609459200, NULL),
+('Sales', NULL, 1609459200, NULL);
+
+-- Insert data into sys_users
+INSERT INTO sys_users (first_name, last_name, primary_department_id, primary_position, start_date, end_date) VALUES
+('John', 'Doe', 1, 'Manager', 1609459200, NULL),
+('Jane', 'Smith', 2, 'Developer', 1609459200, NULL),
+('Alice', 'Johnson', 3, 'Accountant', 1609459200, NULL),
+('Bob', 'Brown', 4, 'Marketing Specialist', 1609459200, NULL),
+('Charlie', 'Davis', 5, 'Sales Representative', 1609459200, NULL);
+
+-- Insert data into user_positions
+INSERT INTO user_positions (user_id, department_id, position, kenmu, start_date, end_date) VALUES
+(1, 2, 'Developer', 1, 1609459200, NULL),
+(2, 3, 'Accountant', 1, 1609459200, NULL),
+(3, 4, 'Marketing Specialist', 1, 1609459200, NULL),
+(4, 5, 'Sales Representative', 1, 1609459200, NULL),
+(5, 1, 'Manager', 1, 1609459200, NULL);
+
+-- Insert data into change_history
+INSERT INTO change_history (entity, entity_id, change_type, changed_by, change_date, old_value, new_value) VALUES
+('user', 1, 'create', 1, 1609459200, NULL, '{"first_name": "John", "last_name": "Doe"}'),
+('user', 2, 'create', 1, 1609459200, NULL, '{"first_name": "Jane", "last_name": "Smith"}'),
+('department', 1, 'create', 1, 1609459200, NULL, '{"department_name": "HR"}');

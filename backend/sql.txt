@@ -1,0 +1,44 @@
+CREATE TABLE sys_users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    primary_department_id INT,
+    primary_position VARCHAR(50),
+    start_date BIGINT,
+    end_date BIGINT NULL,
+    role INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE cmn_department (
+    department_id INT AUTO_INCREMENT PRIMARY KEY,
+    department_name VARCHAR(100),
+    parent_department_id INT NULL,
+    start_date BIGINT,
+    end_date BIGINT NULL
+);
+
+CREATE TABLE user_positions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    department_id INT,
+    position VARCHAR(50),
+    kenmu INT NOT NULL,
+    start_date BIGINT,
+    end_date BIGINT NULL,
+    FOREIGN KEY (user_id) REFERENCES sys_users(user_id),
+    FOREIGN KEY (department_id) REFERENCES cmn_department(department_id)
+);
+
+CREATE TABLE change_history (
+    change_id INT AUTO_INCREMENT PRIMARY KEY,
+    entity VARCHAR(50),
+    entity_id INT,
+    change_type VARCHAR(50),
+    changed_by INT,
+    change_date BIGINT,
+    old_value TEXT,
+    new_value TEXT
+);

@@ -2,44 +2,48 @@ from .database import Base
 from sqlalchemy import Integer, String, Column, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
-class User(Base) :
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True, nullable=False)
-    username = Column(String(50), nullable=False)
-    email = Column(String(100), nullable=False)
-    password = Column(String(100), nullable=False)
-    role = Column(Integer, nullable=False)
+class Department(Base):
+    __tablename__ = 'departments'
+    department_id = Column(Integer, primary_key=True, index=True)
+    department_name = Column(String(50), unique=True, index=True)
+    parent_department_id = Column(Integer, ForeignKey('departments.department_id'))
+    start_date = Column(Integer)
+    end_date = Column(Integer, nullable=True)
+    parent = relationship("Department", remote_side=[department_id])
     
-class Product(Base) :
-    __tablename__ = "products"
-    id = Column(Integer, primary_key=True, nullable=False)
-    name = Column(String(100), nullable=False)
-    description = Column(String(300), nullable=False)
-    image1 = Column(String(300), nullable=False)
-    image2 = Column(String(300), nullable=True)
-    image3 = Column(String(300), nullable=True)
-    price = Column(Float, nullable=False)
-    category = Column(String(100), nullable=False)
-    stock = Column(Integer, nullable=False)
-    size = Column(String(20), nullable=False)
-    new = Column(Integer, nullable=False)
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(100), unique=True, index=True)
+    email = Column(String(100), unique=True, index=True)
+    password = Column(String(100))
+    role = Column(Integer)
+    primary_department_id = Column(Integer, ForeignKey('departments.department_id'))
+    primary_position = Column(String(100))
+    start_date = Column(Integer)
+    end_date = Column(Integer, nullable=True)
+    department = relationship("Department")
     
-class Order(Base) :
-    __tablename__ = "orders"
-    id = Column(Integer, primary_key=True, nullable=False)
-    user_id = Column(Integer, nullable=False)
-    products = Column(String(300), nullable=False)
-    paid = Column(Integer, nullable=False)
-    status = Column(String(100), nullable=False)
-    name = Column(String(100), nullable=False)
-    email = Column(String(100), nullable=True)
-    phone = Column(String(20), nullable=False)
-    address = Column(String(300), nullable=False)
-    order_description = Column(String(300), nullable=True)
-    method = Column(Integer, nullable=False)
-    created_at = Column(Integer, nullable=True)
+class UserPosition(Base):
+    __tablename__ = 'user_positions'
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    department_id = Column(Integer, ForeignKey('departments.department_id'))
+    position = Column(String(100))
+    kenmu = Column(Integer)
+    start_date = Column(Integer)
+    end_date = Column(Integer, nullable=True)
+    user = relationship("User")
+    department = relationship("Department")
     
-class Category(Base) :
-    __tablename__ = "categories"
-    id = Column(Integer, primary_key=True, nullable=False)
-    name = Column(String(100), nullable=False)
+class ChangeHistory(Base):
+    __tablename__ = 'change_histories'
+    change_id = Column(Integer, primary_key=True, index=True)
+    entity = Column(String(100))
+    entity_id = Column(Integer)
+    change_type = Column(String(100))
+    changed_by = Column(Integer, ForeignKey('users.id'))
+    change_date = Column(Integer)
+    old_value = Column(String(100), nullable=True)
+    new_value = Column(String(100), nullable=True)
+    user = relationship("User")
